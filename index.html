@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .chats {
+            width: 500px;
+            border: 1px solid purple;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chats h3 {
+            margin: 0;
+        }
+
+        .chats span {
+            font-size: 12px;
+        }
+
+        .chats .my-chats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            align-self: flex-end;
+        }
+
+        .chats div {
+            margin: 10px 0;
+        }
+
+        .inputs {
+            display: flex;
+        }
+
+        .inputs .message {
+            width: 100%;
+            margin-right: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="user-info">
+        <input type="text" id="username" placeholder="Enter your username">
+        <button onclick="joinChat()">Join Chat</button>
+    </div>
+    <div id="chat-container" style="display: none;">
+        <div class="chats" id="chats">
+            <div class="inputs" id="inputs">
+                <input type="text" class="message" id="message" placeholder="Type a message">
+                <button class="send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        var socket = io("http://localhost:3000");
+
+        myUsername = null;
+
+        socket.on('newChatMessage', ({ message, username }) => {
+            const chatContainer = document.getElementById('chats');
+            const inputContainer = document.getElementById('inputs');
+            const chatMessage = document.createElement('div');
+            const chatClass = username == myUsername ? 'my-chats' : 'other-chats';
+            chatMessage.classList.add(chatClass);
+
+            const messageElement = document.createElement('h3');
+            messageElement.innerText = message;
+            const usernameElement = document.createElement('span');
+            usernameElement.innerText = username;
+
+            chatMessage.appendChild(messageElement);
+            chatMessage.appendChild(usernameElement);
+
+            chatContainer.insertBefore(chatMessage, inputContainer);
+            console.log(message, username);
+        })
+
+        function sendMessage() {
+            const input = document.getElementById('message');
+            if (!message.value) {
+                alert('Please enter a message');
+                return;
+            }
+
+            socket.emit('chat message', { message: input.value, username: myUsername });
+            input.value = '';
+        }
+
+        function joinChat() {
+            const input = document.getElementById('username');
+            if (!input.value) {
+                alert('Please enter a username');
+                return;
+            }
+
+            myUsername = input.value;
+            document.getElementById('user-info').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
