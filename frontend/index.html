@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    </link>
+  </head>
+
+  <body>
+    <!-- Шаблон за съобщение -->
+    <template id="message-template">
+      <div class="message">
+        <div class="user-msg">
+          <span class="username"></span>
+          <span class="time"></span>
+        </div>
+        <div class="message-content"></div>
+      </div>
+    </template>
+    <template id="user-connected-template">
+      <div class="username"></div>
+    </template>
+
+    <div class="content">
+      <div id="user-info">
+        <input type="text" id="username" placeholder="Enter your username" />
+        <button onclick="joinChat()">Join Chat</button>
+      </div>
+      <div id="chat-container" style="display: none">
+        <div class="chats" id="chats">
+          <div class="connected-users">
+
+          </div>
+          <div class="messages">
+
+          </div>
+          <div class="inputs" id="inputs">
+            <input
+              type="text"
+              class="message"
+              id="message"
+              placeholder="Type a message"
+              onkeyup="sendMessageIfEnter(event)"
+            />
+            <button class="send" onclick="sendMessage()">
+              <img src="/assets/send-icon.png" alt="button icon" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="/scripts/chats.js"></script>
+  </body>
+</html>
