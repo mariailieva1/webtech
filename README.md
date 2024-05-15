@@ -2,7 +2,7 @@
 This repository contains my submission for my homework for the project. 
 
 #### Description of the homework:
-"Implement a prototype of sending messages in real time."
+- Implement a prototype of sending messages in real time.
 
 ### Built With
 - Express
